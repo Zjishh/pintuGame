@@ -20,6 +20,7 @@ public class GameJF extends JFrame {
     int x0 = 0, y0 = 0;
     int temp1[][];
     String path = "image\\girl\\girl6\\";
+
     public GameJF() {
         init();
 

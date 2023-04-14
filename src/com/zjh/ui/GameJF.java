@@ -2,6 +2,8 @@ package com.zjh.ui;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 
 /****************************
@@ -13,8 +15,11 @@ import java.util.Random;
  * @Description:   *
  ****************************/
 public class GameJF extends JFrame {
-    int[] imgnum = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16};
+    int[] imgnum = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     int[][] imgnum2 = new int[4][4];
+    int x0 = 0, y0 = 0;
+    int temp1[][];
+    String path = "image\\girl\\girl6\\";
     public GameJF() {
         init();
 
@@ -41,22 +46,32 @@ public class GameJF extends JFrame {
         }
 
         for (int i = 0; i < imgnum.length; i++) {
-            imgnum2[i / 4][i % 4] = imgnum[i];
+            if (imgnum[i] == 0) {
+                System.out.println("0索引的下标是" + x0 + "," + y0);
+                x0 = i / 4;
+                y0 = i % 4;
+            } else {
+                imgnum2[i / 4][i % 4] = imgnum[i];
+            }
+
         }
     }
 
     private void initImage() {
+        //清空原本的图片
+        this.getContentPane().removeAll();
+
         JLabel backimg = new JLabel(new ImageIcon("image\\background.png"));
 
-        backimg.setBounds(40,40,508,560);
+        backimg.setBounds(40, 40, 508, 560);
 
 
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 4; i++) {
                 int num = imgnum2[j][i];
-                JLabel label = new JLabel(new ImageIcon("image\\girl\\girl1\\" + num + ".jpg"));
+                JLabel label = new JLabel(new ImageIcon(path + num + ".jpg"));
                 //指定位置
-                label.setBounds(105 * i+83, 105 * j+134, 105, 105);
+                label.setBounds(105 * i + 83, 105 * j + 134, 105, 105);
                 //添加边框
                 label.setBorder(new BevelBorder(1));
                 this.getContentPane().add(label);
@@ -64,6 +79,9 @@ public class GameJF extends JFrame {
         }
         this.getContentPane().add(backimg);
 
+
+        //刷新界面
+        this.getContentPane().repaint();
     }
 
 
@@ -106,5 +124,90 @@ public class GameJF extends JFrame {
         //取消默认居中放置
         this.setLayout(null);
         this.setDefaultCloseOperation(3);//关闭模式
+        //给整个界面添加监听
+        //为什么不能用匿名内部类
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            //按下不送
+            public void keyPressed(KeyEvent e) {
+                int keyCode = e.getKeyCode();
+                if (keyCode == 65){
+                    //清空原本的图片
+                    GameJF.this.getContentPane().removeAll();
+                    JLabel backALL = new JLabel(new ImageIcon(path+"all.jpg"));
+
+                    backALL.setBounds(83, 134, 420, 420);
+                    GameJF.this.getContentPane().add(backALL);
+
+                    JLabel backimg = new JLabel(new ImageIcon("image\\background.png"));
+
+                    backimg.setBounds(40, 40, 508, 560);
+                    GameJF.this.getContentPane().add(backimg);
+
+
+                    GameJF.this.getContentPane().repaint();
+                }
+
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                //对上下左右判断
+                //左上右下37，38，39，40
+                int keyCode = e.getKeyCode();
+                if (keyCode == 65){
+                    initImage();
+                }
+                switch (keyCode) {
+                    case 37:
+                        if (y0 == 3){
+                            break;
+                        }
+                        imgnum2[x0][y0] = imgnum2[x0][y0+1];
+                        imgnum2[x0][y0+1] = 0;
+                        y0++;
+                        initImage();
+                        break;
+                    case 38:
+                        if (x0 == 3){
+                            break;
+                        }
+                        imgnum2[x0][y0] = imgnum2[x0+1][y0];
+                        imgnum2[x0+1][y0] = 0;
+                        x0++;
+                        initImage();
+                        break;
+                    case 39:
+                        if (y0 == 0){
+                            break;
+                        }
+                        imgnum2[x0][y0] = imgnum2[x0][y0-1];
+                        imgnum2[x0][y0-1] = 0;
+                        y0--;
+                        initImage();
+                        break;
+                    case 40:
+                        if (x0 == 0){
+                            break;
+                        }
+                        imgnum2[x0][y0] = imgnum2[x0-1][y0];
+                        imgnum2[x0-1][y0] = 0;
+                        x0--;
+                        initImage();
+                        break;
+
+
+                }
+
+            }
+        });
+
     }
+
 }

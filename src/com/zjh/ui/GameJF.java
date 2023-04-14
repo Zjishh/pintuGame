@@ -19,8 +19,7 @@ public class GameJF extends JFrame {
     int[][] imgnum2 = new int[4][4];
     int x0 = 0, y0 = 0;
     int temp1[][];
-    String path = "image\\girl\\girl6\\";
-
+    String path = "image\\girl\\girl6\\";//**
     public GameJF() {
         init();
 

@@ -15,8 +15,8 @@ import com.zjh.ui.ResisterJF;
 public class Start {
     public static void main(String[] args) {
         new LoginJF();
-        new ResisterJF();
-        new GameJF();
+//        new ResisterJF();
+//        new GameJF();
 
 ;    }
 }

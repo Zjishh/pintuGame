@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.Year;
+import java.util.Random;
 
 /****************************
  * @project pintu
@@ -13,15 +15,39 @@ import java.awt.event.MouseListener;
  * @date 2023/4/12 20:20
  * @Description:   *
  ****************************/
-public class LoginJF extends JFrame   {
+public class LoginJF extends JFrame {
+    StringBuffer yanzhengma = new StringBuffer();
 
     public LoginJF() {
+
         init();
+        initYanzhengma();
         initImg();
+
         this.setVisible(true);
     }
 
+    private void initYanzhengma() {
+        yanzhengma.delete(0,yanzhengma.length());
+
+        Random random = new Random();
+        for (int j = 0; j < 4; j++) {
+
+            int i = random.nextInt(123);
+            char cha = 0;
+            while (i < 48 || (i > 57 && i < 65) || (i > 90 && i < 97) || i > 122) {
+                i = random.nextInt(123);
+            }
+            cha = (char) i;
+            yanzhengma.append(cha);
+        }
+
+
+    }
+
     private void initImg() {
+
+
         JLabel usernameText = new JLabel(new ImageIcon("image\\login\\用户名.png"));
         usernameText.setBounds(116, 135, 47, 17);
         this.getContentPane().add(usernameText);
@@ -42,14 +68,48 @@ public class LoginJF extends JFrame   {
         JLabel codeText = new JLabel(new ImageIcon("image\\login\\验证码.png"));
         codeText.setBounds(133, 256, 50, 30);
         this.getContentPane().add(codeText);
+
         //验证码的输入框
         JTextField code = new JTextField();
         code.setBounds(195, 256, 100, 30);
         this.getContentPane().add(code);
 
+        JLabel rightCode = new JLabel();
+        //设置内容
+        rightCode.setText(yanzhengma.toString());
+        //位置和宽高
+        rightCode.setBounds(320, 256, 50, 30);
+        //添加到界面
+        this.getContentPane().add(rightCode);
+        rightCode.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
 
+                initYanzhengma();
+                rightCode.setText(yanzhengma.toString());
 
+            }
 
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         //5.添加登录按钮
         JButton login = new JButton();
@@ -71,18 +131,42 @@ public class LoginJF extends JFrame   {
             @Override
             public void mousePressed(MouseEvent e) {
                 login.setIcon(new ImageIcon("image\\login\\登录按下.png"));
-                initImg();
+
 
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 login.setIcon(new ImageIcon("image\\login\\登录按钮.png"));
-                initImg();
 
 
+                if (username.getText().equals("1")&&password.getText().equals("1")) {
+                    if (code.getText().toUpperCase().equals(rightCode.getText().toUpperCase())){
+                        LoginJF.this.setVisible(false);
+                        new GameJF();
+                    }else {
+                        tanchuang("验证码错误");
+                    }
+                }
+                else {
+                    tanchuang("账号或者密码错误");
+                }
 
 
+            }
+
+            private void tanchuang(String s) {
+                JDialog jDialog = new JDialog();
+                JLabel label = new JLabel(s);
+                jDialog.getContentPane().add(label);
+                jDialog.setSize(200,100);
+                //置顶
+                jDialog.setAlwaysOnTop(true);
+                //弹窗居中
+                jDialog.setLocationRelativeTo(null);
+                //不关闭无法惊醒接下来的操作
+                jDialog.setModal(true);
+                jDialog.setVisible(true);
             }
 
             @Override
@@ -115,13 +199,13 @@ public class LoginJF extends JFrame   {
             @Override
             public void mousePressed(MouseEvent e) {
                 register.setIcon(new ImageIcon("image\\login\\注册按下.png"));
-                initImg();
+
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 register.setIcon(new ImageIcon("image\\login\\注册按钮.png"));
-                initImg();
+
             }
 
             @Override
@@ -131,7 +215,7 @@ public class LoginJF extends JFrame   {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                System.out.println(118231211);
+
             }
         });
 
@@ -151,7 +235,6 @@ public class LoginJF extends JFrame   {
 
 
     }
-
 
 
 }

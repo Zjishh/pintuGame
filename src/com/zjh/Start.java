@@ -1,8 +1,6 @@
 package com.zjh;
 
-import com.zjh.ui.GameJF;
 import com.zjh.ui.LoginJF;
-import com.zjh.ui.ResisterJF;
 
 /****************************
  * @project pintu
